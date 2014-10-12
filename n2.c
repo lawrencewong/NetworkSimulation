@@ -24,7 +24,12 @@ int main()
 		{
 			if(packet[2] == 'F')
 			{
+				printf("\n----- END OF MESSAGE -----\n");
 				break;
+			}
+			else if(packet[2] == 'S')
+			{
+				printf("\n----- START OF MESSAGE -----\n");
 			}
 
 			if(packet[1] == '2')

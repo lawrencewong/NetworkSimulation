@@ -23,14 +23,8 @@ int main()
 	int ch = 0;
 	char packet[3];
 	char end[1];
-
-	// int mid = 1000000;
-	int range;
 	int sleepfor;
 
-	srand(time(NULL));
-	range = (2000000000 - 1000) + 1000;
-	sleepfor = rand() % range + 1000;
 	// Creating links
 	mkfifo(link1, 0666);
 	mkfifo(link2, 0666);
@@ -65,13 +59,16 @@ int main()
 				continue;
 			}
 			
+			packet[2] = 'S';
+
 			while((ch = fgetc(filePointer)) != EOF)
 			{
 				packet[0] = ch;
-				packet[2] = 'T';
-				usleep(1000000);
+				sleepfor = (rand() % 2000000) + 1000;
+				usleep(sleepfor);
 				printf("---OUT---: %c %c %c \n", packet[0], packet[1], packet[2]);
 				write(fd, packet, sizeof(packet));
+				packet[2] = 'T';
 			} 
 			packet[2] = 'F';
 			write(fd, packet, sizeof(packet));
