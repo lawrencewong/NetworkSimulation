@@ -3,6 +3,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+#define _BSD_SOURCE
 
 #define MAX_BUF 2
 
@@ -14,8 +15,6 @@ int main()
 	char * link1 = "/tmp/link1";
 	char packet[3];
 
-
-	
 	while(awake)
 	{
 		fd = open(link1, O_RDONLY);
@@ -23,8 +22,6 @@ int main()
 
 		while( read(fd, packet, 3))
 		{
-			// printf("Received packet: %c %c %c", packet[0], packet[1], packet[2]);
-
 			if(packet[2] == 'F')
 			{
 				break;
@@ -33,6 +30,7 @@ int main()
 			if(packet[1] == '2')
 			{
 				printf("%c", packet[0]);	
+				fflush(stdout);
 			}
 		} 
 
