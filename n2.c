@@ -1,3 +1,10 @@
+/*
+n2.c
+This is node sets up (link3) to communicate with node 4.
+This node can print the data that it is meant to or pass it along
+to node 4 with some time delay.
+*/
+
 #include <stdio.h>
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -18,16 +25,20 @@ int main()
 	int sleepfor;
 	char buf[MAX_BUF];
 
+	// Creating link 3 that will talk to node 4
 	mkfifo(link3, 0666);
 
+	// Constatnly blocked on reading until it gets some packets.
 	while(awake)
 	{
 		fd = open(link1, O_RDONLY);
 		fdn4 = open(link3, O_WRONLY);
 		packet[3] = 'T';
+		
 		while( read(fd, packet, 4))
 		{
 
+			// Recieving the kill switch packet and shutsdown child node.
 			if(packet[3] == 'F')
 			{
 				close(fd);
@@ -43,6 +54,8 @@ int main()
 				awake = 0;
 				break;
 			}
+
+			// Printing out message or sending it to the child node.
 			if(packet[2] == 'F' && packet[1] == '2')
 			{
 				printf("\n[Node 2]----- END OF MESSAGE -----\n");
@@ -77,6 +90,7 @@ int main()
 		close(fd);
 		close(fdn4);
 
+		// Sending the confirmation of a recieved message by a node to the parent.
 		if(packet[1] == '2')
 		{
 			fd = open(link1, O_WRONLY);
@@ -94,6 +108,7 @@ int main()
 			close(fd);
 		}
 
+		// Checking to see if the system will end or not.
 		fd = open(link1, O_RDONLY);
 		read(fd, packet, 4);
 		close(fd);

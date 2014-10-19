@@ -1,3 +1,13 @@
+/*
+n1.c
+This is the base node that sets up two links (link1 and link2).
+This node is the interface for the user, asking which file to transfer
+and where to send it. It also handles the prompt for continuing to send to another node.
+It shuts down all nodes if it is given the instruction to.
+It uses these two links to send data throughout the network. 
+It sends packets towards the destination node.
+*/
+
 #include <stdio.h>
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -27,10 +37,11 @@ int main()
 	char packet[4];
 	int sleepfor;
 
-	// Creating links
+	// Creating links1and 2
 	mkfifo(link1, 0666);
 	mkfifo(link2, 0666);
 
+	// My main loop to keep the syastem running if asked to do so
 	while(sendAgain)
 	{
 		// Get text file and node destination
@@ -51,6 +62,7 @@ int main()
 		else
 		{
 
+			// Determines which link to use based on the destination node.
 			if(destNode[1] == '2' || destNode[1] == '4')
 			{
 				fd = open(link1, O_WRONLY);
@@ -67,6 +79,8 @@ int main()
 			
 			packet[2] = 'S';
 
+			// Reads from the text file character by character and sends the data over the link to the destination.
+			// Has a delay on each time of sending the character to simulate an actual network.
 			while((ch = fgetc(filePointer)) != EOF)
 			{
 				packet[0] = ch;
@@ -76,10 +90,13 @@ int main()
 				write(fd, packet, sizeof(packet));
 				packet[2] = 'T';
 			} 
+
+			// Telling the destination node that it has reached the end of the text file.
 			packet[2] = 'F';
 			write(fd, packet, sizeof(packet));
 			close(fd);
 
+			// Reading in the "Recieved by nN" statement.
 			if(destNode[1] == '2' || destNode[1] == '4')
 			{
 				fd = open(link1, O_RDONLY);
@@ -91,6 +108,8 @@ int main()
 			read(fd, buf, MAX_BUF);
 			printf("[Node 1]---IN---: %s\n", buf);
 			close(fd);
+
+			// Prompting the user to run again.
 			printf("[Node 1]Would you like to continue? (Y/N)\n");
 			scanf("%c",&confirm);
 			getchar();
@@ -100,6 +119,7 @@ int main()
 				sendAgain = 0;
 				packet[3] = 'F';
 			}
+			// Sends the packet to all nodes to tell them if the system will run again or not.
 			packet[0] = '!';
 			packet[1] = '!';
 			packet[2] = '!';

@@ -1,3 +1,8 @@
+/*
+n7.c
+This is leaf node that prints out the data it is given and reports back that it has recieved the message.
+*/
+
 #include <stdio.h>
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -12,6 +17,7 @@ int main()
 	char * link6 = "/tmp/link6";
 	char packet[4];
 
+	// Constanlty blocked on reading for data or the kill switch
 	while(awake)
 	{
 
@@ -19,12 +25,15 @@ int main()
 
 		while( read(fd, packet, 4))
 		{
+			// Shuts down node if recieved killswitch packet
 			if(packet[3] == 'F')
 			{
 				printf("[Node 7]Node 7 shutting down ...\n");
 				awake = 0;
 				break;
 			}
+
+			// Prints the data
 			if(packet[2] == 'F')
 			{
 					printf("\n[Node 7]----- END OF MESSAGE -----\n");
