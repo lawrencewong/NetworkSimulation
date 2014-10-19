@@ -1,12 +1,6 @@
 CC = gcc
 run: build
-	./n7&
-	./n6&
-	./n5&
-	./n4&
-	./n3&
-	./n2&
-	./n1
+	./n7 & ./n6 & ./n5 & ./n4 & ./n3 & ./n2 & ./n1
 
 build: n1 n2 n3 n4 n5 n6 n7
 

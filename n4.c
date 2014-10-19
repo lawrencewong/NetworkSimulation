@@ -3,6 +3,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <string.h>
 
 int main()
 {
@@ -18,11 +19,9 @@ int main()
 
 		while( read(fd, packet, 4))
 		{
-			fflush(stdout);
 			if(packet[3] == 'F')
 			{
 				printf("[Node 4]Node 4 shutting down ...\n");
-				fflush(stdout);
 				awake = 0;
 				break;
 			}
@@ -33,7 +32,6 @@ int main()
 					fd = open(link3, O_WRONLY);
 					write(fd, "Received by n4", sizeof("Received by n4"));
 					close(fd);
-
 					break;
 
 			}

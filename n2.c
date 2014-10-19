@@ -3,6 +3,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <string.h>
 #define _BSD_SOURCE
 #define MAX_BUF 1024
 
@@ -38,7 +39,6 @@ int main()
 				packet[3] = 'F';
 				fdn4 = open(link3, O_WRONLY);
 				write(fdn4, packet, sizeof(packet));
-				fflush(stdout);
 				close(fdn4);			
 				awake = 0;
 				break;
@@ -46,13 +46,11 @@ int main()
 			if(packet[2] == 'F' && packet[1] == '2')
 			{
 				printf("\n[Node 2]----- END OF MESSAGE -----\n");
-				fflush(stdout);
 				break;
 			}
 			else if(packet[2] == 'S' && packet[1] == '2')
 			{
 				printf("\n[Node 2]----- START OF MESSAGE -----\n");
-				fflush(stdout);
 			}
 
 			if(packet[1] == '2')
@@ -65,7 +63,6 @@ int main()
 				sleepfor = (rand() % 2000000) + 1000;
 				usleep(sleepfor);
 				//printf("---OUT---: %c %c %c \n", packet[0], packet[1], packet[2]);
-				
 				write(fdn4, packet, sizeof(packet));
 			}
 
@@ -90,8 +87,8 @@ int main()
 		{
 			fdn4 = open(link3, O_RDONLY);
 			read(fdn4, buf, MAX_BUF);
-			close(fdn4);
 			printf("[Node 2]---IN---: %s\n", buf);
+			close(fdn4);
 			fd = open(link1, O_WRONLY);
 			write(fd, buf, sizeof(buf));
 			close(fd);
@@ -109,7 +106,6 @@ int main()
 			packet[3] = 'F';
 			fdn4 = open(link3, O_WRONLY);
 			write(fdn4, packet, sizeof(packet));
-			fflush(stdout);
 			close(fdn4);			
 			awake = 0;
 		}

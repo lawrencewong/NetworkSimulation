@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 #define _BSD_SOURCE
 #define MAX_BUF 1024
@@ -88,8 +89,8 @@ int main()
 				fd = open(link2, O_RDONLY);
 			}
 			read(fd, buf, MAX_BUF);
-			close(fd);
 			printf("[Node 1]---IN---: %s\n", buf);
+			close(fd);
 			printf("[Node 1]Would you like to continue? (Y/N)\n");
 			scanf("%c",&confirm);
 			getchar();

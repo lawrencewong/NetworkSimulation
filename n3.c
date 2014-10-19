@@ -3,6 +3,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <string.h>
 #define _BSD_SOURCE
 #define MAX_BUF 1024
 
@@ -49,15 +50,12 @@ int main()
 				packet[3] = 'F';
 				fdn5 = open(link4, O_WRONLY);
 				write(fdn5, packet, sizeof(packet));
-				fflush(stdout);
 				close(fdn5);
 				fdn6 = open(link5, O_WRONLY);
 				write(fdn6, packet, sizeof(packet));
-				fflush(stdout);
 				close(fdn6);	
 				fdn7 = open(link6, O_WRONLY);
 				write(fdn7, packet, sizeof(packet));
-				fflush(stdout);
 				close(fdn7);			
 				awake = 0;
 				break;
@@ -65,13 +63,11 @@ int main()
 			if(packet[2] == 'F' && packet[1] == '3')
 			{
 				printf("\n[Node 3]----- END OF MESSAGE -----\n");
-				fflush(stdout);
 				break;
 			}
 			else if(packet[2] == 'S' && packet[1] == '3')
 			{
 				printf("\n[Node 3]----- START OF MESSAGE -----\n");
-				fflush(stdout);
 			}
 
 			if(packet[1] == '3')
@@ -84,7 +80,6 @@ int main()
 				sleepfor = (rand() % 2000000) + 1000;
 				usleep(sleepfor);
 				//printf("---OUT---: %c %c %c \n", packet[0], packet[1], packet[2]);
-				
 				write(fdn5, packet, sizeof(packet));
 			}
 			else if(packet[1] == '6')
@@ -92,7 +87,6 @@ int main()
 				sleepfor = (rand() % 2000000) + 1000;
 				usleep(sleepfor);
 				//printf("---OUT---: %c %c %c \n", packet[0], packet[1], packet[2]);
-				
 				write(fdn6, packet, sizeof(packet));
 			}
 			else if(packet[1] == '7')
@@ -100,7 +94,6 @@ int main()
 				sleepfor = (rand() % 2000000) + 1000;
 				usleep(sleepfor);
 				//printf("---OUT---: %c %c %c \n", packet[0], packet[1], packet[2]);
-				
 				write(fdn7, packet, sizeof(packet));
 			}
 
@@ -126,8 +119,8 @@ int main()
 		{
 			fdn5 = open(link4, O_RDONLY);
 			read(fdn5, buf, MAX_BUF);
-			close(fdn5);
 			printf("[Node 3]---IN---: %s\n", buf);
+			close(fdn5);
 			fd = open(link2, O_WRONLY);
 			write(fd, buf, sizeof(buf));
 			close(fd);
@@ -136,8 +129,8 @@ int main()
 		{
 			fdn6 = open(link5, O_RDONLY);
 			read(fdn6, buf, MAX_BUF);
-			close(fdn6);
 			printf("[Node 3]---IN---: %s\n", buf);
+			close(fdn6);
 			fd = open(link2, O_WRONLY);
 			write(fd, buf, sizeof(buf));
 			close(fd);
@@ -146,8 +139,8 @@ int main()
 		{
 			fdn7 = open(link6, O_RDONLY);
 			read(fdn7, buf, MAX_BUF);
-			close(fdn7);
 			printf("[Node 3]---IN---: %s\n", buf);
+			close(fdn7);
 			fd = open(link2, O_WRONLY);
 			write(fd, buf, sizeof(buf));
 			close(fd);
@@ -165,15 +158,12 @@ int main()
 			packet[3] = 'F';
 			fdn5 = open(link4, O_WRONLY);
 			write(fdn5, packet, sizeof(packet));
-			fflush(stdout);
 			close(fdn5);
 			fdn6 = open(link5, O_WRONLY);
 			write(fdn6, packet, sizeof(packet));
-			fflush(stdout);
 			close(fdn6);	
 			fdn7 = open(link6, O_WRONLY);
 			write(fdn7, packet, sizeof(packet));
-			fflush(stdout);
 			close(fdn7);			
 			awake = 0;
 		}
