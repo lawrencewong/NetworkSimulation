@@ -9,20 +9,20 @@ int main()
 {
 	int fd;
 	int awake = 1;
-	char * link3 = "/tmp/link3";
+	char * link5 = "/tmp/link5";
 	char packet[4];
 
 	while(awake)
 	{
 
-		fd = open(link3, O_RDONLY);
+		fd = open(link5, O_RDONLY);
 
 		while( read(fd, packet, 4))
 		{
 			fflush(stdout);
 			if(packet[3] == 'F')
 			{
-				printf("Node 4 shutting down ...\n");
+				printf("Node 6 shutting down ...\n");
 				fflush(stdout);
 				awake = 0;
 				break;
@@ -31,8 +31,8 @@ int main()
 			{
 					printf("\n----- END OF MESSAGE -----\n");
 					close(fd);
-					fd = open(link3, O_WRONLY);
-					write(fd, "Received by n4", sizeof("Received by n4"));
+					fd = open(link5, O_WRONLY);
+					write(fd, "Received by n6", sizeof("Received by n4"));
 					close(fd);
 
 					break;
@@ -43,7 +43,7 @@ int main()
 				printf("\n----- START OF MESSAGE -----\n");
 
 			}
-			if(packet[1] == '4')
+			if(packet[1] == '6')
 			{
 				printf("%c", packet[0]);
 				fflush(stdout);
@@ -55,12 +55,12 @@ int main()
 			return 0;
 		}
 		
-		fd = open(link3, O_RDONLY);
+		fd = open(link5, O_RDONLY);
 		read(fd, packet, 4);
 		close(fd);
 		if(packet[3] == 'F')
 		{
-			printf("Node 4 shutting down ...\n");
+			printf("Node 6 shutting down ...\n");
 			awake = 0;
 		}
 

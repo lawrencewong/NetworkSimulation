@@ -12,6 +12,8 @@
 int main()
 {
 	int fd;
+	int fdn2;
+	int fdn3;
 	int sendAgain = 1;
 	char confirm;
 	char * link1 = "/tmp/link1";
@@ -21,8 +23,7 @@ int main()
 	char filename[MAX_BUF];
 	char destNode[MAX_BUF];
 	int ch = 0;
-	char packet[3];
-	char end[1];
+	char packet[4];
 	int sleepfor;
 
 	// Creating links
@@ -36,7 +37,10 @@ int main()
 		printf("Usage: <filename.txt> <node> EX. 'test.txt n4'\n");
 		scanf("%s %s", filename, destNode);
 		getchar();
+		packet[0] = '!';
 		packet[1] = destNode[1];
+		packet[2] = '!';
+		packet[3] = 'T';
 
 		// Opening text file
 		filePointer = fopen(filename, "r");
@@ -45,6 +49,7 @@ int main()
 		}
 		else
 		{
+
 			if(destNode[1] == '2' || destNode[1] == '4')
 			{
 				fd = open(link1, O_WRONLY);
@@ -66,7 +71,7 @@ int main()
 				packet[0] = ch;
 				sleepfor = (rand() % 2000000) + 1000;
 				usleep(sleepfor);
-				printf("---OUT---: %c %c %c \n", packet[0], packet[1], packet[2]);
+				printf("---OUT---: %c %c %c %c\n", packet[0], packet[1], packet[2],packet[3]);
 				write(fd, packet, sizeof(packet));
 				packet[2] = 'T';
 			} 
@@ -74,8 +79,14 @@ int main()
 			write(fd, packet, sizeof(packet));
 			close(fd);
 
-
-			fd = open(link1, O_RDONLY);
+			if(destNode[1] == '2' || destNode[1] == '4')
+			{
+				fd = open(link1, O_RDONLY);
+			}
+			else if(destNode[1] == '3' || destNode[1] == '5' || destNode[1] == '6' || destNode[1] == '7')
+			{
+				fd = open(link2, O_RDONLY);
+			}
 			read(fd, buf, MAX_BUF);
 			close(fd);
 			printf("---IN---: %s\n", buf);
@@ -86,15 +97,17 @@ int main()
 			{
 				printf("Shutting down all nodes...\n");
 				sendAgain = 0;
-				end[0] = '0';
+				packet[3] = 'F';
 			}
-			else
-			{
-				end[0] = '1';
-			}
-			fd = open(link1, O_WRONLY);
-			write(fd, end, sizeof(end));
-			close(fd);
+			packet[0] = '!';
+			packet[1] = '!';
+			packet[2] = '!';
+			fdn2 = open(link1, O_WRONLY);
+			write(fdn2, packet, sizeof(packet));
+			close(fdn2);
+			fdn3 = open(link2, O_WRONLY);
+			write(fdn3, packet, sizeof(packet));
+			close(fdn3);
 		}
 		
 	}	
