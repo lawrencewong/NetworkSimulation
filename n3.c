@@ -122,7 +122,8 @@ int main()
 			write(fd, "Received by n3", sizeof("Received by n3"));
 			close(fd);
 		}
-e		{
+		else if(packet[1] == '5')
+		{
 			fdn5 = open(link4, O_RDONLY);
 			read(fdn5, buf, MAX_BUF);
 			close(fdn5);
