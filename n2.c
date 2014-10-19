@@ -31,7 +31,7 @@ int main()
 			{
 				close(fd);
 				close(fdn4);
-				printf("Node 2 shutting down ...\n");
+				printf("[Node 2]Node 2 shutting down ...\n");
 				packet[0] = '!';
 				packet[1] = '!';
 				packet[2] = '!';
@@ -45,13 +45,13 @@ int main()
 			}
 			if(packet[2] == 'F' && packet[1] == '2')
 			{
-				printf("\n----- END OF MESSAGE -----\n");
+				printf("\n[Node 2]----- END OF MESSAGE -----\n");
 				fflush(stdout);
 				break;
 			}
 			else if(packet[2] == 'S' && packet[1] == '2')
 			{
-				printf("\n----- START OF MESSAGE -----\n");
+				printf("\n[Node 2]----- START OF MESSAGE -----\n");
 				fflush(stdout);
 			}
 
@@ -64,7 +64,7 @@ int main()
 			{
 				sleepfor = (rand() % 2000000) + 1000;
 				usleep(sleepfor);
-				printf("---OUT---: %c %c %c \n", packet[0], packet[1], packet[2]);
+				//printf("---OUT---: %c %c %c \n", packet[0], packet[1], packet[2]);
 				
 				write(fdn4, packet, sizeof(packet));
 			}
@@ -91,7 +91,7 @@ int main()
 			fdn4 = open(link3, O_RDONLY);
 			read(fdn4, buf, MAX_BUF);
 			close(fdn4);
-			printf("---IN---: %s\n", buf);
+			printf("[Node 2]---IN---: %s\n", buf);
 			fd = open(link1, O_WRONLY);
 			write(fd, buf, sizeof(buf));
 			close(fd);
@@ -102,7 +102,7 @@ int main()
 		close(fd);
 		if(packet[3] == 'F')
 		{
-			printf("Node 2 shutting down ...\n");
+			printf("[Node 2]Node 2 shutting down ...\n");
 			packet[0] = '!';
 			packet[1] = '!';
 			packet[2] = '!';

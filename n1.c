@@ -45,7 +45,7 @@ int main()
 		// Opening text file
 		filePointer = fopen(filename, "r");
 		if(filePointer == NULL){
-			printf("Something went wrong opening that file.\n");
+			printf("[Node 1]Something went wrong opening that file.\n");
 		}
 		else
 		{
@@ -60,7 +60,7 @@ int main()
 			}
 			else
 			{
-				printf("Invalid node destination.\n");
+				printf("[Node 1]Invalid node destination.\n");
 				continue;
 			}
 			
@@ -71,7 +71,7 @@ int main()
 				packet[0] = ch;
 				sleepfor = (rand() % 2000000) + 1000;
 				usleep(sleepfor);
-				printf("---OUT---: %c %c %c %c\n", packet[0], packet[1], packet[2],packet[3]);
+				//printf("---OUT---: %c %c %c %c\n", packet[0], packet[1], packet[2],packet[3]);
 				write(fd, packet, sizeof(packet));
 				packet[2] = 'T';
 			} 
@@ -89,13 +89,13 @@ int main()
 			}
 			read(fd, buf, MAX_BUF);
 			close(fd);
-			printf("---IN---: %s\n", buf);
-			printf("Would you like to continue? (Y/N)\n");
+			printf("[Node 1]---IN---: %s\n", buf);
+			printf("[Node 1]Would you like to continue? (Y/N)\n");
 			scanf("%c",&confirm);
 			getchar();
 			if(confirm == 'N')
 			{
-				printf("Shutting down all nodes...\n");
+				printf("[Node 1]Shutting down all nodes...\n");
 				sendAgain = 0;
 				packet[3] = 'F';
 			}

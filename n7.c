@@ -3,7 +3,6 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
-#define _BSD_SOURCE
 
 int main()
 {
@@ -22,14 +21,14 @@ int main()
 			fflush(stdout);
 			if(packet[3] == 'F')
 			{
-				printf("Node 7 shutting down ...\n");
+				printf("[Node 7]Node 7 shutting down ...\n");
 				fflush(stdout);
 				awake = 0;
 				break;
 			}
 			if(packet[2] == 'F')
 			{
-					printf("\n----- END OF MESSAGE -----\n");
+					printf("\n[Node 7]----- END OF MESSAGE -----\n");
 					close(fd);
 					fd = open(link6, O_WRONLY);
 					write(fd, "Received by n7", sizeof("Received by n4"));
@@ -40,7 +39,7 @@ int main()
 			}
 			else if(packet[2] == 'S')
 			{
-				printf("\n----- START OF MESSAGE -----\n");
+				printf("\n[Node 7]----- START OF MESSAGE -----\n");
 
 			}
 			if(packet[1] == '7')
@@ -60,7 +59,7 @@ int main()
 		close(fd);
 		if(packet[3] == 'F')
 		{
-			printf("Node 7 shutting down ...\n");
+			printf("[Node 7]Node 7 shutting down ...\n");
 			awake = 0;
 		}
 

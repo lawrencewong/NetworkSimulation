@@ -42,7 +42,7 @@ int main()
 				close(fdn5);
 				close(fdn6);
 				close(fdn7);
-				printf("Node 3 shutting down ...\n");
+				printf("[Node 3]Node 3 shutting down ...\n");
 				packet[0] = '!';
 				packet[1] = '!';
 				packet[2] = '!';
@@ -64,13 +64,13 @@ int main()
 			}
 			if(packet[2] == 'F' && packet[1] == '3')
 			{
-				printf("\n----- END OF MESSAGE -----\n");
+				printf("\n[Node 3]----- END OF MESSAGE -----\n");
 				fflush(stdout);
 				break;
 			}
 			else if(packet[2] == 'S' && packet[1] == '3')
 			{
-				printf("\n----- START OF MESSAGE -----\n");
+				printf("\n[Node 3]----- START OF MESSAGE -----\n");
 				fflush(stdout);
 			}
 
@@ -83,7 +83,7 @@ int main()
 			{ 
 				sleepfor = (rand() % 2000000) + 1000;
 				usleep(sleepfor);
-				printf("---OUT---: %c %c %c \n", packet[0], packet[1], packet[2]);
+				//printf("---OUT---: %c %c %c \n", packet[0], packet[1], packet[2]);
 				
 				write(fdn5, packet, sizeof(packet));
 			}
@@ -91,7 +91,7 @@ int main()
 			{
 				sleepfor = (rand() % 2000000) + 1000;
 				usleep(sleepfor);
-				printf("---OUT---: %c %c %c \n", packet[0], packet[1], packet[2]);
+				//printf("---OUT---: %c %c %c \n", packet[0], packet[1], packet[2]);
 				
 				write(fdn6, packet, sizeof(packet));
 			}
@@ -99,7 +99,7 @@ int main()
 			{
 				sleepfor = (rand() % 2000000) + 1000;
 				usleep(sleepfor);
-				printf("---OUT---: %c %c %c \n", packet[0], packet[1], packet[2]);
+				//printf("---OUT---: %c %c %c \n", packet[0], packet[1], packet[2]);
 				
 				write(fdn7, packet, sizeof(packet));
 			}
@@ -127,7 +127,7 @@ int main()
 			fdn5 = open(link4, O_RDONLY);
 			read(fdn5, buf, MAX_BUF);
 			close(fdn5);
-			printf("---IN---: %s\n", buf);
+			printf("[Node 3]---IN---: %s\n", buf);
 			fd = open(link2, O_WRONLY);
 			write(fd, buf, sizeof(buf));
 			close(fd);
@@ -137,7 +137,7 @@ int main()
 			fdn6 = open(link5, O_RDONLY);
 			read(fdn6, buf, MAX_BUF);
 			close(fdn6);
-			printf("---IN---: %s\n", buf);
+			printf("[Node 3]---IN---: %s\n", buf);
 			fd = open(link2, O_WRONLY);
 			write(fd, buf, sizeof(buf));
 			close(fd);
@@ -147,7 +147,7 @@ int main()
 			fdn7 = open(link6, O_RDONLY);
 			read(fdn7, buf, MAX_BUF);
 			close(fdn7);
-			printf("---IN---: %s\n", buf);
+			printf("[Node 3]---IN---: %s\n", buf);
 			fd = open(link2, O_WRONLY);
 			write(fd, buf, sizeof(buf));
 			close(fd);
@@ -158,7 +158,7 @@ int main()
 		close(fd);
 		if(packet[3] == 'F')
 		{
-			printf("Node 3 shutting down ...\n");
+			printf("[Node 3]Node 3 shutting down ...\n");
 			packet[0] = '!';
 			packet[1] = '!';
 			packet[2] = '!';
